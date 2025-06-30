@@ -21,7 +21,7 @@
 * **结论**：标准的在线价值型算法无法直接适用于此离线推荐场景。
 
 ![DDQN训练曲线](https://github.com/rookieC511/Offline-RL-Recommender-System/blob/main/ddqn.png?raw=true)
-*(注：请将此图片链接替换为您DDQN失败的训练曲线图在GitHub上的实际链接)*
+
 
 ### 2. 最终方案：CQL (保守Q学习)
 
@@ -32,7 +32,6 @@
 * **结论**：CQL是解决本项目核心挑战的卓越方案。
 
 ![CQL最佳表现](https://github.com/rookieC511/Offline-RL-Recommender-System/blob/main/cql.png?raw=true)
-*(注：请将此图片链接替换为您CQL最佳实验的训练曲线图在GitHub上的实际链接)*
 
 ### 3. 对比方案：DPO (直接策略优化) (`traningdpo.py`)
 
@@ -69,7 +68,7 @@
     * 请将包含项目和工人交互记录的数据文件（如`project_list.csv`, `worker_quality.csv`等）以及`project/`和`entry/`目录放置于项目根目录下。
 
 3.  **运行训练**:
-    * **训练DDQN模型**:
+    * **训练cql模型**:
         ```bash
         python traning.py
         ```
@@ -77,4 +76,4 @@
         ```bash
         python traningdpo.py
         ```
-    * *(注：CQL的训练代码整合在`traning.py`的某个历史版本中，或可根据DPO代码结构进行适配)*
+    * *(注：DDQN的训练代码整合在`traning.py`的某个历史版本中，或可根据DPO代码结构进行适配)*
