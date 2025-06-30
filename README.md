@@ -20,7 +20,7 @@
 * **结果**：模型在训练初期表现出学习能力，但很快就遭遇了灾难性的**过拟合**。训练奖励持续上升，而验证奖励在达到一个很低的峰值后便急剧恶化。
 * **结论**：标准的在线价值型算法无法直接适用于此离线推荐场景。
 
-![DDQN训练曲线](https://raw.githubusercontent.com/rookieC511/Offline-RL-Recommender-System/main/assets/ddqn_failure.png)
+![DDQN训练曲线](https://raw.githubusercontent.com/rookieC511/Offline-RL-Recommender-System/main/assets/ddqn.png)
 *(注：请将此图片链接替换为您DDQN失败的训练曲线图在GitHub上的实际链接)*
 
 ### 2. 最终方案：CQL (保守Q学习)
