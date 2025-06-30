@@ -20,7 +20,7 @@
 * **结果**：模型在训练初期表现出学习能力，但很快就遭遇了灾难性的**过拟合**。训练奖励持续上升，而验证奖励在达到一个很低的峰值后便急剧恶化。
 * **结论**：标准的在线价值型算法无法直接适用于此离线推荐场景。
 
-![DDQN训练曲线](https://raw.githubusercontent.com/rookieC511/Offline-RL-Recommender-System/main/assets/ddqn.png)
+![DDQN训练曲线](https://github.com/rookieC511/Offline-RL-Recommender-System/blob/main/ddqn.png?raw=true)
 *(注：请将此图片链接替换为您DDQN失败的训练曲线图在GitHub上的实际链接)*
 
 ### 2. 最终方案：CQL (保守Q学习)
@@ -31,7 +31,7 @@
 * **结果**：CQL的引入取得了决定性的成功。模型训练过程**高度稳定**，彻底消除了过拟合问题。在对关键超参数`alpha`进行精细调优后，我们最终在`alpha=0.1`时，取得了**0.2176**的最高测试集奖励。
 * **结论**：CQL是解决本项目核心挑战的卓越方案。
 
-![CQL最佳表现](https://raw.githubusercontent.com/rookieC511/Offline-RL-Recommender-System/main/assets/cql_success.png)
+![CQL最佳表现](https://github.com/rookieC511/Offline-RL-Recommender-System/blob/main/cql.png?raw=true)
 *(注：请将此图片链接替换为您CQL最佳实验的训练曲线图在GitHub上的实际链接)*
 
 ### 3. 对比方案：DPO (直接策略优化) (`traningdpo.py`)
@@ -43,8 +43,7 @@
 * **结果**：学习成功的DPO模型最终取得了**0.1876**的测试集奖励。
 * **结论**：DPO作为一种可行的离线策略型算法，其性能在本任务中仍不及经过充分优化的CQL。
 
-![DPO最佳表现](https://raw.githubusercontent.com/rookieC511/Offline-RL-Recommender-System/main/assets/dpo_best.png)
-*(注：请将此图片链接替换为您DPO最佳实验的训练曲线图在GitHub上的实际链接)*
+![DPO最佳表现](https://github.com/rookieC511/Offline-RL-Recommender-System/blob/main/dpo.png?raw=true)
 
 ---
 
