@@ -14,6 +14,7 @@ import os
 from src.data.data_loader import DataLoader
 from src.data.feature_processor import FeatureProcessor
 from src.data.data_validator import DataValidator
+from src.models.cql_network import GeneralQNetwork as QNetwork
 
 
 # Experience tuple for replay buffer
@@ -36,7 +37,7 @@ class BaseRLAlgorithm(ABC):
             config: Configuration dictionary
         """
         self.config = config
-        self.device = config.get('DEVICE', torch.device('cpu'))
+        self.device = torch.device(config.get('DEVICE', 'cpu'))
         self.algorithm_name = config.get('ALGORITHM_NAME', 'BaseRL')
         
         # Data components

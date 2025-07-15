@@ -4,7 +4,11 @@ Inherits from base config and adds CQL-specific parameters.
 """
 
 from .base_config import *
-
+# Inherit device setting from base config, or default to 'cpu'
+try:
+    from .base_config import DEVICE
+except ImportError:
+    DEVICE = 'cpu'
 # Algorithm identifier
 ALGORITHM_NAME = "CQL"
 

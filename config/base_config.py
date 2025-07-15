@@ -7,7 +7,7 @@ import torch
 from dateutil.parser import parse
 
 # Device configuration
-DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 # Data paths
 DATA_PATHS = {

@@ -15,7 +15,7 @@ from torch.utils.data import DataLoader, IterableDataset
 import datetime
 
 from .base_algorithm import BaseRLAlgorithm, Experience
-from src.models.cql_network import CQLNetwork, ReplayBuffer
+from src.models.cql_network import GeneralQNetwork as QNetwork, ReplayBuffer
 from config.base_config import ALL_BEGIN_TIME_DT, NUMERIC_FEATURES
 
 
@@ -89,7 +89,7 @@ class CQLAlgorithm(BaseRLAlgorithm):
         embedding_dims = self.config.get('EMBEDDING_DIMS', {})
         
         # Create local Q-network
-        self.q_local = CQLNetwork(
+        self.q_local = QNetwork(
             num_categories_embed_size=self.embedding_sizes['num_categories'],
             num_sub_categories_embed_size=self.embedding_sizes['num_sub_categories'],
             num_industries_embed_size=self.embedding_sizes['num_industries'],
@@ -104,7 +104,7 @@ class CQLAlgorithm(BaseRLAlgorithm):
         ).to(self.device)
         
         # Create target Q-network (copy of local)
-        self.q_target = CQLNetwork(
+        self.q_target = QNetwork(
             num_categories_embed_size=self.embedding_sizes['num_categories'],
             num_sub_categories_embed_size=self.embedding_sizes['num_sub_categories'],
             num_industries_embed_size=self.embedding_sizes['num_industries'],

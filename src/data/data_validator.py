@@ -279,7 +279,7 @@ class DataValidator:
         project_info = data_dict.get('project_info', {})
         project_list_data = data_dict.get('project_list_data', {})
         entry_info = data_dict.get('entry_info', {})
-        worker_quality_map = data_dict.get('worker_quality_map', {})\n        
+        worker_quality_map = data_dict.get('worker_quality_map', {})        
         # Check project consistency
         projects_in_info_not_list = set(project_info.keys()) - set(project_list_data.keys())
         projects_in_list_not_info = set(project_list_data.keys()) - set(project_info.keys())

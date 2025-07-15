@@ -14,6 +14,9 @@ from . import cql_config
 from . import dpo_config
 from . import ddqn_config
 
+# DQN可复用DDQN配置
+dqn_config = ddqn_config
+
 
 @dataclass
 class ConfigValidationError(Exception):
@@ -31,6 +34,7 @@ class ConfigLoader:
         'cql': cql_config,
         'dpo': dpo_config,
         'ddqn': ddqn_config,
+        'dqn': dqn_config,
     }
     
     def __init__(self):
@@ -180,6 +184,7 @@ class ConfigLoader:
         
         if algorithm == 'cql':
             self._validate_cql_config(config)
+            
         elif algorithm == 'dpo':
             self._validate_dpo_config(config)
         elif algorithm == 'ddqn':
@@ -244,7 +249,7 @@ def create_arg_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description='RL Crowdsourcing Training')
     
     parser.add_argument('--algorithm', type=str, required=True, 
-                       choices=['cql', 'dpo', 'ddqn'],
+                       choices=['cql', 'dpo', 'ddqn', 'dqn'],
                        help='RL algorithm to use')
     
     parser.add_argument('--config-file', type=str,

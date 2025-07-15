@@ -9,7 +9,7 @@ import torch.nn.functional as F
 import numpy as np
 
 
-class CQLNetwork(nn.Module):
+class GeneralQNetwork(nn.Module):
     """
     Q-Network with embeddings for CQL algorithm.
     Handles categorical and numeric features with dropout regularization.
@@ -35,7 +35,7 @@ class CQLNetwork(nn.Module):
             fc2_units: Second fully connected layer units
             dropout_rate: Dropout rate for regularization
         """
-        super(CQLNetwork, self).__init__()
+        super(GeneralQNetwork, self).__init__()
         
         # Set random seed for reproducibility
         self.seed = torch.manual_seed(seed)
