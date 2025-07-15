@@ -85,9 +85,9 @@ python train_cql_refactored.py --algorithm dpo --num-epochs 1 --batch-size 4 --c
 
 > 下图为各算法在训练过程中的奖励变化曲线（已归档于`docs/`目录，GitHub可直接预览）：
 
-- ![CQL最佳表现](docs/cql.png)
-- ![DDQN训练曲线](docs/ddqn.png)
-- ![DPO最佳表现](docs/dpo.png)
+- ![CQL最佳表现](cql.png)
+- ![DDQN训练曲线](ddqn.png)
+- ![DPO最佳表现](dpo.png)
 
 ### 结论
 
