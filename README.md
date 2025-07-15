@@ -1,79 +1,87 @@
 # Offline-RL-Recommender-System
-# 基于离线强化学习的智能众包任务推荐系统
 
-本项目旨在探索并对比多种强化学习（RL）算法在解决真实世界众包平台任务推荐问题上的应用。项目从经典的DQN/DDQN算法入手，深入分析其在离线环境下的局限性，并最终引入并实现了两种先进的离线强化学习算法——CQL和DPO，通过系统性的实验对比，找到了最优的解决方案。
+## 项目简介
 
----
+本项目为**基于离线强化学习的智能众包任务推荐系统**，支持多种主流RL算法（CQL、DDQN、DQN、DPO），采用统一的模块化架构，便于扩展、对比和生产部署。
 
-## 核心挑战
-
-在离线的、固定的历史数据集上训练强化学习模型，会面临一个核心挑战：**分布偏移（Distributional Shift）**。当模型学习到一个不同于历史数据行为的新策略时，它会开始评估一些在数据集中从未出现过的“状态-动作”对。传统的在线RL算法（如DQN）在这种情况下，极易对这些“分布外”动作的价值产生毫无根据的过高估计，从而导致策略崩溃和严重的过拟合。
-
----
-
-## 算法探索历程
-
-### 1. 基线模型：DDQN (`traning.py`)
-
-我们首先实现了DDQN作为基线模型。实验结果清晰地暴露了上述核心挑战：
-
-* **结果**：模型在训练初期表现出学习能力，但很快就遭遇了灾难性的**过拟合**。训练奖励持续上升，而验证奖励在达到一个很低的峰值后便急剧恶化。
-* **结论**：标准的在线价值型算法无法直接适用于此离线推荐场景。
-
-![DDQN训练曲线](https://github.com/rookieC511/Offline-RL-Recommender-System/blob/main/ddqn.png?raw=true)
-
-
-### 2. 最终方案：CQL (保守Q学习)
-
-为了解决过拟合问题，我们引入了为离线场景设计的SOTA价值型算法——CQL。
-
-* **原理**：CQL通过在损失函数中增加一个“保守主义”正则化项，来主动惩罚对分布外动作的Q值估计，从而迫使模型在进行价值评估时保持谨慎。
-* **结果**：CQL的引入取得了决定性的成功。模型训练过程**高度稳定**，彻底消除了过拟合问题。在对关键超参数`alpha`进行精细调优后，我们最终在`alpha=0.1`时，取得了**0.2176**的最高测试集奖励。
-* **结论**：CQL是解决本项目核心挑战的卓越方案。
-
-![CQL最佳表现](https://github.com/rookieC511/Offline-RL-Recommender-System/blob/main/cql.png?raw=true)
-
-### 3. 对比方案：DPO (直接策略优化) (`traningdpo.py`)
-
-为了进行更全面的对比，我们实现了另一种不同范式（策略型）的离线算法——DPO。
-
-* **原理**：DPO通过学习历史数据中的“偏好对”（即“好的选择”vs“坏的选择”），直接对策略进行优化，绕过了复杂的奖励建模过程。
-* **挑战与迭代**：我们通过多轮迭代，解决了从数据稀疏性到模型不学习的一系列工程挑战，最终在`学习率=3e-5, beta=0.1`的配置下，让DPO模型成功学习。
-* **结果**：学习成功的DPO模型最终取得了**0.1876**的测试集奖励。
-* **结论**：DPO作为一种可行的离线策略型算法，其性能在本任务中仍不及经过充分优化的CQL。
-
-![DPO最佳表现](https://github.com/rookieC511/Offline-RL-Recommender-System/blob/main/dpo.png?raw=true)
+- 支持一体化训练脚本，命令行参数灵活切换算法与配置。
+- 数据、特征、网络结构、算法实现全部模块化，易于维护和复用。
+- 提供mini数据集，便于快速验证训练流程。
 
 ---
 
-## 最终结论与模型对比
+## 目录结构
 
-| 算法 | **最终测试集奖励** | 训练稳定性 | 核心优势 |
-| :--- | :--- | :--- | :--- |
-| **CQL** | **0.2176** | **高度稳定** | **性能与可靠性最佳** |
-| DPO | 0.1876 | 稳定 | 训练效率高 |
-| DDQN | ~0.1653 | 严重过拟合 | 算法经典 |
-
-经过系统性的实验与对比，本项目最终确定**基于CQL（alpha=0.1）的模型为最优解决方案**。它不仅在最终的量化评估中全面胜出，其稳健的学习过程也证明了它是为真实世界离线数据构建可靠推荐系统的更优选择。
+```
+├── train_cql_refactored.py      # 主训练脚本（支持所有算法）
+├── src/
+│   ├── algorithms/              # 各RL算法实现（CQL/DDQN/DQN/DPO）
+│   ├── models/                  # 通用Q/策略网络（GeneralQNetwork）
+│   └── data/                    # 数据加载、特征工程、校验
+├── config/                      # 配置文件（算法/全局/网络等）
+├── mini_data/                   # mini测试数据集
+├── project/ entry/              # 全量原始数据
+├── docs/                        # 归档的实验图片、测试脚本等
+├── tests/                       # 单元/集成测试
+├── rl_model.pth                 # 最新模型权重
+├── README.md                    # 项目说明
+└── ...
+```
 
 ---
 
-## 如何运行
+## 支持的算法
 
-1.  **环境准备**:
-    * 本项目代码基于Python 3.8和PyTorch。
-    * 推荐使用提供的`Dockerfile`来构建一个一致的运行环境。
+- **CQL**（Conservative Q-Learning，保守Q学习）
+- **DDQN**（Double DQN）
+- **DQN**（Deep Q-Network）
+- **DPO**（Direct Policy Optimization，直接策略优化）
 
-2.  **数据准备**:
-    * 请将包含项目和工人交互记录的数据文件（如`project_list.csv`, `worker_quality.csv`等）以及`project/`和`entry/`目录放置于项目根目录下。
+所有算法均可通过主脚本和参数灵活切换，无需修改代码。
 
-3.  **运行训练**:
-    * **训练cql模型**:
-        ```bash
-        python traning.py
-        ```
-    * **训练DPO模型**:
-        ```bash
-        python traningdpo.py
-        ```
-    * *(注：DDQN的训练代码整合在`traning.py`的某个历史版本中，或可根据DPO代码结构进行适配)*
+---
+
+## 快速开始
+
+### 1. 环境准备
+- 推荐：`Dockerfile` 一键构建（Python 3.8 + PyTorch）
+- 或手动安装 requirements.txt（如未提供可根据import补全）
+
+### 2. 数据准备
+- 将 `project_list.csv`、`worker_quality.csv`、`project/`、`entry/` 放于根目录
+- 快速测试可用 `mini_data/` 目录
+
+### 3. 训练与评估
+
+以mini数据集为例：
+
+```bash
+python train_cql_refactored.py --algorithm cql --num-epochs 1 --batch-size 4 --config-file mini_data_config.json
+python train_cql_refactored.py --algorithm ddqn --num-epochs 1 --batch-size 4 --config-file mini_data_config.json
+python train_cql_refactored.py --algorithm dqn --num-epochs 1 --batch-size 4 --config-file mini_data_config.json
+python train_cql_refactored.py --algorithm dpo --num-epochs 1 --batch-size 4 --config-file mini_data_config.json
+```
+
+- 训练结果、模型权重、训练曲线等均自动保存。
+- 可通过 `--plot-results` 生成训练过程可视化。
+
+---
+
+## 主要特性与亮点
+- **一体化训练入口**，支持所有主流RL算法，便于横向对比和实验复现。
+- **模块化设计**，算法、网络、特征、数据完全解耦，易于扩展新算法。
+- **高效数据管道**，支持大规模数据与mini数据快速切换。
+- **丰富的配置系统**，支持命令行/文件/代码多层覆盖。
+- **自动化测试与数据校验**，保证实验可靠性。
+
+---
+
+## 贡献与扩展
+- 欢迎PR新算法、特征工程、实验脚本等。
+- 如有问题请提交issue或联系作者。
+
+---
+
+## 致谢
+- 本项目参考并复现了多篇RL与推荐系统领域的前沿论文。
+- 感谢所有开源社区的贡献者！
